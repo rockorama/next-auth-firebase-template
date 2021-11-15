@@ -1,15 +1,19 @@
-import Form from 'formact'
+import Form, { FormSubmitPayload } from 'formact'
 import { Box, Typography } from '@material-ui/core'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/FormSubmitButton'
 import TextField from '../components/TextField'
 
-import { auth, reAuth } from '../firebase'
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
+import { changePassword, PASSWORD_VALIDATION } from '../firebase/authentication'
 
-import { PASSWORD_VALIDATION } from './reset-password/[oobCode]'
+type ChangePasswordForm = {
+  password: string
+  newPassword: string
+  confirmPassword: string
+}
 
 export default function ChangePassword() {
   const { ready, user } = useAuthentication(true)
@@ -19,12 +23,14 @@ export default function ChangePassword() {
     return null
   }
 
-  const onSubmit = async (payload: FormSubmitPayload) => {
+  const onSubmit = async (payload: FormSubmitPayload<ChangePasswordForm>) => {
     if (payload.valid) {
       alert(null)
       try {
-        await reAuth(payload.values.currentPassword)
-        await auth.currentUser.updatePassword(payload.values.password)
+        await changePassword(
+          payload.values.password,
+          payload.values.newPassword
+        )
         alert({ severity: 'success', message: 'Password Successully Changed' })
       } catch (e) {
         alert(e)
@@ -34,13 +40,7 @@ export default function ChangePassword() {
   }
 
   return (
-    <Form
-      onSubmit={onSubmit}
-      initialValues={{
-        name: user.displayName,
-        email: user.email,
-      }}
-    >
+    <Form<ChangePasswordForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
         <Box pb={4}>
           <Typography variant="h4">Change Password</Typography>
@@ -49,7 +49,7 @@ export default function ChangePassword() {
         <TextField
           type="password"
           required
-          name="currentPassword"
+          name="password"
           variant="outlined"
           label="Current password"
           fullWidth
@@ -57,7 +57,7 @@ export default function ChangePassword() {
         <TextField
           type="password"
           required
-          name="password"
+          name="newPassword"
           variant="outlined"
           label="New password"
           fullWidth
@@ -66,7 +66,7 @@ export default function ChangePassword() {
           validation={PASSWORD_VALIDATION}
           type="password"
           required
-          name="repeat-password"
+          name="repeatPassword"
           variant="outlined"
           label="Repeat new password"
           fullWidth

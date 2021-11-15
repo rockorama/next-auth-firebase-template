@@ -1,5 +1,5 @@
 {
-  "name": "invoisr",
+  "name": "next-auth-firebase-template",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,22 +8,22 @@
     "start": "next start"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
+    "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.57",
-    "firebase": "^8.3.2",
-    "firebase-admin": "^9.6.0",
-    "formact": "^2.0.12",
-    "next": "10.1.3",
-    "next-seo": "^4.24.0",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "firebase": "^9.4.1",
+    "firebase-admin": "^10.0.0",
+    "formact": "^3.0.6",
+    "next": "^12.0.3",
+    "next-seo": "^4.28.1",
     "react": "17.0.2",
-    "react-device-detect": "^1.17.0",
+    "react-device-detect": "^2.1.2",
     "react-dom": "17.0.2",
-    "sass": "^1.32.8",
-    "use-file-picker": "^1.3.0"
+    "sass": "^1.43.4",
+    "use-file-picker": "^1.4.1"
   },
   "devDependencies": {
-    "@types/react": "^17.0.3",
-    "typescript": "^4.2.3"
+    "@types/react": "^17.0.34",
+    "typescript": "^4.4.4"
   }
 }

@@ -1,16 +1,23 @@
 import { useEffect } from 'react'
-import Form from 'formact'
+import Form, { FormSubmitPayload } from 'formact'
 import { Box, Button, Typography } from '@material-ui/core'
 import { useFilePicker } from 'use-file-picker'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/FormSubmitButton'
 import TextField from '../components/TextField'
-import { auth, uploadUserFile } from '../firebase'
+import { uploadUserFile } from '../firebase'
 import { useAuthentication } from '../utils/Contexts/Auth'
 import Avatar from '../components/Avatar'
 
 import { useAlert } from '../utils/Contexts/Alert'
+import { updateAvatar, updateName } from '../firebase/authentication'
+
+type ProfileForm = {
+  name: string
+  email: string
+  photoUrl?: string
+}
 
 export default function Profile() {
   const { ready, user } = useAuthentication(true)
@@ -37,17 +44,13 @@ export default function Profile() {
     return null
   }
 
-  const onSubmit = async (payload: FormSubmitPayload) => {
+  const onSubmit = async (payload: FormSubmitPayload<ProfileForm>) => {
     if (payload.valid) {
       try {
-        await auth.currentUser.updateProfile({
-          displayName: payload.values.name,
-        })
+        await updateName(payload.values.name)
         if (plainFiles.length) {
           const fileUrl = await uploadUserFile(plainFiles[0], 'profile')
-          await user.updateProfile({
-            photoURL: fileUrl,
-          })
+          await updateAvatar(fileUrl)
           user.reload()
           clear()
         }
@@ -60,7 +63,7 @@ export default function Profile() {
   }
 
   return (
-    <Form
+    <Form<ProfileForm>
       onSubmit={onSubmit}
       initialValues={{
         name: user.displayName,

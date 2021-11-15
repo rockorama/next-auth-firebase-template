@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useState } from 'react'
 
-import { auth, UserType } from '../../firebase'
+import { auth, UserType } from '../../firebase/authentication'
 
 export type AuthContextType = {
   ready?: boolean

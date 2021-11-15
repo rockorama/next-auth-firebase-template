@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import { auth } from '../../firebase'
 import { Box, Button, CircularProgress } from '@material-ui/core'
 import FeedbackBox from '../../components/Feedback'
 import CenterContainer from '../../components/CenterContainer'
+import {
+  user,
+  sendVerificationLink,
+  verifyEmail,
+} from '../../firebase/authentication'
 
 export default function VerifyEmail() {
   const { query, push } = useRouter()
@@ -15,7 +19,7 @@ export default function VerifyEmail() {
     if (query.oobCode) {
       const verify = async () => {
         try {
-          await auth.applyActionCode(query.oobCode?.toString() || '')
+          await verifyEmail(query.oobCode?.toString() || '')
           setResult({
             severity: 'success',
             message: 'Your email address is now verified.',
@@ -51,14 +55,12 @@ export default function VerifyEmail() {
   return (
     <CenterContainer>
       <FeedbackBox {...result} />
-      {auth.currentUser &&
-      !auth.currentUser.emailVerified &&
-      result.severity === 'error' ? (
+      {user && !user.emailVerified && result.severity === 'error' ? (
         <Box pt={4}>
           <Button
             onClick={async () => {
               try {
-                await auth.currentUser.sendEmailVerification()
+                await sendVerificationLink()
                 setResult({
                   severity: 'success',
                   message:

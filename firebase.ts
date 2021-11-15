@@ -1,7 +1,6 @@
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/storage'
-import 'firebase/firestore'
+import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
 import ENV from './environment'
 
@@ -24,27 +23,11 @@ const FIREBASE_CONFIG = {
   },
 }
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(FIREBASE_CONFIG[ENV])
-}
+const app = initializeApp(FIREBASE_CONFIG[ENV])
 
-export const db = firebase.firestore()
-export const auth = firebase.auth()
+export const db = getFirestore(app)
 
-export const reAuth = (password: string) => {
-  const user = auth.currentUser
-  if (user && user.email) {
-    const credential = firebase.auth.EmailAuthProvider.credential(
-      user.email,
-      password
-    )
-    return user.reauthenticateWithCredential(credential)
-  }
-}
-
-export type UserType = firebase.User
-
-export const storage = firebase.storage()
+export const storage = getStorage(app)
 
 export const uploadFile = async (file: File, path: string): Promise<string> => {
   const ref = storage.ref().child(path)
