@@ -1,7 +1,7 @@
 import admin, { ServiceAccount } from 'firebase-admin'
 import { NextApiRequest } from 'next'
 
-import ENV from './environment'
+import ENV from '../environment'
 
 const FIREBASE_CONFIG = {
   TESTING: {

@@ -13,6 +13,7 @@ import {
   User,
 } from '@firebase/auth'
 import { ValidationFunction } from 'formact'
+
 import { app } from './client'
 
 export const auth = getAuth(app)
@@ -63,6 +64,10 @@ export function updateName(displayName: string) {
 
 export function updateAvatar(photoURL: string) {
   return updateProfile(user, { photoURL })
+}
+
+export function signOut() {
+  return auth.signOut()
 }
 
 export const PASSWORD_VALIDATION: ValidationFunction = (

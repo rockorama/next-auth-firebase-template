@@ -6,12 +6,12 @@ import { useFilePicker } from 'use-file-picker'
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/FormSubmitButton'
 import TextField from '../components/TextField'
-import { uploadUserFile } from '../firebase'
 import { useAuthentication } from '../utils/Contexts/Auth'
 import Avatar from '../components/Avatar'
 
 import { useAlert } from '../utils/Contexts/Alert'
 import { updateAvatar, updateName } from '../firebase/authentication'
+import { uploadUserFile } from '../firebase/storage'
 
 type ProfileForm = {
   name: string

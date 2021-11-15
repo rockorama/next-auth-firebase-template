@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getUserInfo, UserRecord } from '../../firebase-admin'
+import { getUserInfo, UserRecord } from '../../firebase/admin'
 
 export type MethodFunction = (
   payload: Record<string, any>,
