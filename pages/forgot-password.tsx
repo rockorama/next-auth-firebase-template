@@ -1,15 +1,17 @@
 import { useState } from 'react'
-import Form from 'formact'
-import { Box, Button, Typography } from '@material-ui/core'
+import Form, { FormSubmitPayload } from 'formact'
+import { Box, Typography } from '@material-ui/core'
 
 import CenterContainer from '../components/CenterContainer'
-import FormSubmitButton from '../components/FormSubmitButton'
-import TextField from '../components/TextField'
+import FormSubmitButton from '../components/Form/FormSubmitButton'
+import TextField from '../components/Form/TextField'
 import FeedbackBox from '../components/Feedback'
 
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
-import { auth } from '../firebase'
+import { sendResetPasswordLink } from '../firebase/authentication'
+
+type ForgotPasswordForm = { email: string }
 
 export default function ForgotPassword() {
   const { ready } = useAuthentication()
@@ -31,11 +33,11 @@ export default function ForgotPassword() {
     )
   }
 
-  const onSubmit = async (payload: FormSubmitPayload) => {
+  const onSubmit = async (payload: FormSubmitPayload<ForgotPasswordForm>) => {
     alert(null)
     if (payload.valid) {
       try {
-        await auth.sendPasswordResetEmail(payload.values.email)
+        await sendResetPasswordLink(payload.values.email)
         setSuccess(true)
       } catch (e) {
         alert(e)
@@ -45,7 +47,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form<ForgotPasswordForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
         <Box pb={4}>
           <Typography variant="h4">Forgot your password?</Typography>

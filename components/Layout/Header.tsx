@@ -4,7 +4,7 @@ import Link from 'next/link'
 import UserMenu from './UserMenu'
 import MenuButton from './MenuButton'
 
-import { SITE_DATA } from '../seo'
+import { SITE_DATA } from '../../config/seo'
 
 export default function Header() {
   const classes = useStyles()

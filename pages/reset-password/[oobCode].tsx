@@ -2,34 +2,32 @@ import { useState } from 'react'
 import { Box, Button, Typography } from '@material-ui/core'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Form from 'formact'
+import Form, { FormSubmitPayload } from 'formact'
 
-import TextField from '../../components/TextField'
-import FormSubmitButton from '../../components/FormSubmitButton'
+import TextField from '../../components/Form/TextField'
+import FormSubmitButton from '../../components/Form/FormSubmitButton'
 import FeedbackBox from '../../components/Feedback'
 import CenterContainer from '../../components/CenterContainer'
+import {
+  PASSWORD_VALIDATION,
+  resetPassword,
+} from '../../firebase/authentication'
 
-import { auth } from '../../firebase'
-
-export const PASSWORD_VALIDATION = (
-  value: string,
-  values: Record<string, string>
-) => {
-  if (value && value !== values.password) {
-    return 'Passwords must match'
-  }
+type ResetPasswordForm = {
+  newPassword: string
+  repeatPassword: string
 }
 
 export default function ResetPassword() {
   const [done, setDone] = useState<FeedbackState>()
   const router = useRouter()
 
-  const onSubmit = async (payload: FormSubmitPayload) => {
+  const onSubmit = async (payload: FormSubmitPayload<ResetPasswordForm>) => {
     if (payload.valid) {
       try {
-        await auth.confirmPasswordReset(
+        await resetPassword(
           router.query.oobCode?.toString() || '',
-          payload.values.password
+          payload.values.newPassword
         )
         setDone({
           message: 'Your password was reset!',
@@ -58,7 +56,7 @@ export default function ResetPassword() {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form<ResetPasswordForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
         <Box pb={4}>
           <Typography variant="h4">Reset your password?</Typography>
@@ -66,7 +64,7 @@ export default function ResetPassword() {
         <TextField
           type="password"
           required
-          name="password"
+          name="newPassword"
           variant="outlined"
           label="New password"
           fullWidth
@@ -75,7 +73,7 @@ export default function ResetPassword() {
           validation={PASSWORD_VALIDATION}
           type="password"
           required
-          name="repeat-password"
+          name="repeatPassword"
           variant="outlined"
           label="Repeat new password"
           fullWidth

@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Box, makeStyles } from '@material-ui/core'
-import { SITE_DATA } from '../seo'
+import { SITE_DATA } from '../../config/seo'
 import { DRAWER_WIDTH } from './Menu'
 
 export default function Footer({ menu }: { menu: boolean }) {

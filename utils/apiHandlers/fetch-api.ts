@@ -1,5 +1,5 @@
 import { auth } from '../../firebase'
-import SERVER_URL from '../../serverUrl'
+import SERVER_URL from '../../config/serverUrl'
 
 export default async function fetchAPI(
   endpoint: string,

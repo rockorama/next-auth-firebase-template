@@ -9,10 +9,10 @@ import {
   MenuItem,
 } from '@material-ui/core'
 
-import { useAuth } from '../utils/Contexts/Auth'
-import { auth, UserType } from '../firebase'
+import { useAuth } from '../../utils/Contexts/Auth'
+import { signOut, UserType } from '../../firebase/authentication'
 import { useState } from 'react'
-import Avatar from './Avatar'
+import Avatar from '../Avatar'
 
 export default function UserMenu() {
   const { ready, user } = useAuth()
@@ -84,7 +84,7 @@ function AuthenticatedUserMenu(props: { user: UserType }) {
         <MenuItem
           onClick={() => {
             handleClose()
-            auth.signOut()
+            signOut()
           }}
         >
           Sign out

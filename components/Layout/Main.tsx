@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { makeStyles, useMediaQuery, useTheme } from '@material-ui/core'
 
-import { useAuth } from '../utils/Contexts/Auth'
+import { useAuth } from '../../utils/Contexts/Auth'
 
 import { DRAWER_WIDTH } from './Menu'
 import Footer from './Footer'

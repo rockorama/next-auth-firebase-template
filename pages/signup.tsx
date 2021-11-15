@@ -1,14 +1,20 @@
 import Link from 'next/link'
-import Form from 'formact'
+import Form, { FormSubmitPayload } from 'formact'
 import { Box, Button, Typography } from '@material-ui/core'
 
 import CenterContainer from '../components/CenterContainer'
-import FormSubmitButton from '../components/FormSubmitButton'
-import TextField from '../components/TextField'
+import FormSubmitButton from '../components/Form/FormSubmitButton'
+import TextField from '../components/Form/TextField'
 
-import { auth } from '../firebase'
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
+import { signUp } from '../firebase/authentication'
+
+type SignUpForm = {
+  name: string
+  email: string
+  password: string
+}
 
 export default function SignUp() {
   const { ready } = useAuthentication()
@@ -17,18 +23,15 @@ export default function SignUp() {
     return null
   }
 
-  const onSubmit = async (payload: FormSubmitPayload) => {
+  const onSubmit = async (payload: FormSubmitPayload<SignUpForm>) => {
     if (payload.valid) {
       alert(null)
       try {
-        await auth.createUserWithEmailAndPassword(
+        await signUp(
+          payload.values.name,
           payload.values.email,
           payload.values.password
         )
-        await auth.currentUser.updateProfile({
-          displayName: payload.values.name,
-        })
-        auth.currentUser.sendEmailVerification()
       } catch (e) {
         alert(e)
       }
@@ -37,7 +40,7 @@ export default function SignUp() {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form<SignUpForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
         <Box pb={4}>
           <Typography variant="h4">Create your account</Typography>

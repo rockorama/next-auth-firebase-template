@@ -1,14 +1,19 @@
 import Link from 'next/link'
-import Form from 'formact'
+import Form, { FormSubmitPayload } from 'formact'
 import { Box, Button, Typography } from '@material-ui/core'
 
 import CenterContainer from '../components/CenterContainer'
-import FormSubmitButton from '../components/FormSubmitButton'
-import TextField from '../components/TextField'
+import FormSubmitButton from '../components/Form/FormSubmitButton'
+import TextField from '../components/Form/TextField'
 
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
-import { auth } from '../firebase'
+import { login } from '../firebase/authentication'
+
+type LoginForm = {
+  email: string
+  password: string
+}
 
 export default function Login() {
   const { ready } = useAuthentication()
@@ -18,14 +23,11 @@ export default function Login() {
     return null
   }
 
-  const onSubmit = async (payload: FormSubmitPayload) => {
+  const onSubmit = async (payload: FormSubmitPayload<LoginForm>) => {
     alert(null)
     if (payload.valid) {
       try {
-        await auth.signInWithEmailAndPassword(
-          payload.values.email,
-          payload.values.password
-        )
+        await login(payload.values.email, payload.values.password)
       } catch (e) {
         alert(e)
       }
@@ -34,7 +36,7 @@ export default function Login() {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form<LoginForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
         <Box pb={4}>
           <Typography variant="h4">Access your account</Typography>

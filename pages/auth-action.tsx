@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
   res,
 }) => {
-  let location
+  let location: string
   switch (query?.mode) {
     case 'resetPassword': {
       location = `reset-password/${query.oobCode}`

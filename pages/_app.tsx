@@ -3,15 +3,15 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { NextSeo } from 'next-seo'
 
-import theme from '../theme'
+import theme from '../config/theme'
 
-import Header from '../components/Header'
-import Menu from '../components/Menu'
-import Main from '../components/Main'
+import Header from '../components/Layout/Header'
+import Menu from '../components/Layout/Menu'
+import Main from '../components/Layout/Main'
 
 import AuthProvider from '../utils/Contexts/Auth'
 
-import { OPEN_GRAPH, SITE_DATA } from '../seo'
+import { OPEN_GRAPH, SITE_DATA } from '../config/seo'
 import AlertProvider from '../utils/Contexts/Alert'
 
 export default function App({ Component, pageProps }) {
