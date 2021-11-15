@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Form, { FormSubmitPayload } from 'formact'
 
-import TextField from '../../components/TextField'
-import FormSubmitButton from '../../components/FormSubmitButton'
+import TextField from '../../components/Form/TextField'
+import FormSubmitButton from '../../components/Form/FormSubmitButton'
 import FeedbackBox from '../../components/Feedback'
 import CenterContainer from '../../components/CenterContainer'
 import {

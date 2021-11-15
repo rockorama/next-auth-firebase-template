@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 
-import ENV from '../environment'
+import ENV from '../config/environment'
 
 const FIREBASE_CONFIG = {
   TESTING: {

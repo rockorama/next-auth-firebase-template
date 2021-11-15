@@ -15,7 +15,7 @@ import {
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
 
-import { useAuth } from '../utils/Contexts/Auth'
+import { useAuth } from '../../utils/Contexts/Auth'
 
 export default function Menu() {
   const classes = useStyles()

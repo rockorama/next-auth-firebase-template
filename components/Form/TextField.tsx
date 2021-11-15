@@ -1,5 +1,5 @@
 import React from 'react'
-import { useField } from 'formact'
+import { FieldProps, useField } from 'formact'
 
 import MuiTextField, {
   TextFieldProps as MuiTextFieldProps,
@@ -24,7 +24,7 @@ const TextField = (props: TextFieldProps) => {
     submitting,
     onBlur,
     submit,
-  } = useField({
+  } = useField<string>({
     ...props,
   })
   const { noFormSubmit, validation, ...other } = props

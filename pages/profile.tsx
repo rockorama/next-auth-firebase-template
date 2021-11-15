@@ -4,8 +4,8 @@ import { Box, Button, Typography } from '@material-ui/core'
 import { useFilePicker } from 'use-file-picker'
 
 import CenterContainer from '../components/CenterContainer'
-import FormSubmitButton from '../components/FormSubmitButton'
-import TextField from '../components/TextField'
+import FormSubmitButton from '../components/Form/FormSubmitButton'
+import TextField from '../components/Form/TextField'
 import { useAuthentication } from '../utils/Contexts/Auth'
 import Avatar from '../components/Avatar'
 

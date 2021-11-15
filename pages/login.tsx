@@ -3,8 +3,8 @@ import Form, { FormSubmitPayload } from 'formact'
 import { Box, Button, Typography } from '@material-ui/core'
 
 import CenterContainer from '../components/CenterContainer'
-import FormSubmitButton from '../components/FormSubmitButton'
-import TextField from '../components/TextField'
+import FormSubmitButton from '../components/Form/FormSubmitButton'
+import TextField from '../components/Form/TextField'
 
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
