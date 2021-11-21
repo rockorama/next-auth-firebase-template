@@ -27,7 +27,7 @@ export default function Login() {
     alert(null)
     if (payload.valid) {
       try {
-        await login(payload.values.email, payload.values.password)
+        await login(payload.values)
       } catch (e) {
         alert(e)
       }

@@ -1,17 +1,29 @@
 import { useRouter } from 'next/router'
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
-import { auth, UserType } from '../../firebase/authentication'
+import {
+  auth,
+  getAuthenticatedUser,
+  UserType,
+} from '../../firebase/authentication'
 
 export type AuthContextType = {
   ready?: boolean
   user?: UserType | null
   menuOpen?: boolean
   setMenu: (open: boolean) => void
+  refreshUser: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
   setMenu: () => {},
+  refreshUser: async () => {},
 })
 
 export function useAuth() {
@@ -51,8 +63,18 @@ export default function AuthProvider({ children }: { children: Children }) {
     })
   }, [])
 
+  const refreshUser = useCallback(async () => {
+    if (user) {
+      const currentUser = getAuthenticatedUser()
+      await currentUser.reload()
+      setUser({ ...currentUser })
+    }
+  }, [user])
+
   return (
-    <AuthContext.Provider value={{ user, ready, menuOpen, setMenu }}>
+    <AuthContext.Provider
+      value={{ user, ready, menuOpen, setMenu, refreshUser }}
+    >
       {children}
     </AuthContext.Provider>
   )

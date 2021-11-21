@@ -1,5 +1,6 @@
 import { getDownloadURL, getStorage, ref, uploadBytes } from '@firebase/storage'
-import { user } from './authentication'
+
+import { getAuthenticatedUser } from './authentication'
 import { app } from './client'
 
 export const storage = getStorage(app)
@@ -13,6 +14,7 @@ export const uploadUserFile = async (
   file: File,
   folder: string
 ): Promise<string> => {
+  const user = getAuthenticatedUser()
   const path = `${user.uid}/${folder}/${file.name}`
-  return await uploadFile(file, path)
+  return uploadFile(file, path)
 }

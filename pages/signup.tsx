@@ -27,11 +27,7 @@ export default function SignUp() {
     if (payload.valid) {
       alert(null)
       try {
-        await signUp(
-          payload.values.name,
-          payload.values.email,
-          payload.values.password
-        )
+        await signUp(payload.values)
       } catch (e) {
         alert(e)
       }
