@@ -5,21 +5,25 @@ import { Box, Button, CircularProgress } from '@material-ui/core'
 import FeedbackBox from '../../components/Feedback'
 import CenterContainer from '../../components/CenterContainer'
 import {
-  user,
   sendVerificationLink,
   verifyEmail,
 } from '../../firebase/authentication'
+import { useAuth } from '../../utils/Contexts/Auth'
 
 export default function VerifyEmail() {
   const { query, push } = useRouter()
-
+  const { user, ready, refreshUser } = useAuth()
   const [result, setResult] = useState<FeedbackState>()
 
   useEffect(() => {
+    if (!user) {
+      return
+    }
     if (query.oobCode) {
       const verify = async () => {
         try {
           await verifyEmail(query.oobCode?.toString() || '')
+          await refreshUser()
           setResult({
             severity: 'success',
             message: 'Your email address is now verified.',
@@ -30,9 +34,12 @@ export default function VerifyEmail() {
       }
       verify()
     }
-  }, [query])
+  }, [query, user])
 
   useEffect(() => {
+    if (!user) {
+      return
+    }
     if (result?.severity === 'success') {
       const timeoutID = setTimeout(() => {
         push('/')
@@ -42,7 +49,11 @@ export default function VerifyEmail() {
         timeoutID && clearTimeout(timeoutID)
       }
     }
-  }, [result])
+  }, [result, user])
+
+  if (!ready) {
+    return null
+  }
 
   if (!result) {
     return (
