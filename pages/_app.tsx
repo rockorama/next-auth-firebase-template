@@ -2,12 +2,11 @@ import Head from 'next/head'
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { NextSeo } from 'next-seo'
+import { ChakraProvider } from '@chakra-ui/react'
 
 import theme from '../config/theme'
 
-import Header from '../components/Layout/Header'
-import Menu from '../components/Layout/Menu'
-import Main from '../components/Layout/Main'
+import Layout from '../components/Layout'
 
 import AuthProvider from '../utils/Contexts/Auth'
 
@@ -16,7 +15,7 @@ import AlertProvider from '../utils/Contexts/Alert'
 
 export default function App({ Component, pageProps }) {
   return (
-    <>
+    <ChakraProvider theme={theme}>
       <NextSeo
         title={SITE_DATA.title}
         description={SITE_DATA.description}
@@ -29,18 +28,13 @@ export default function App({ Component, pageProps }) {
         />
         <link rel="icon" href="/icon.png" />
       </Head>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AuthProvider>
-          <AlertProvider>
-            <Header />
-            <Menu />
-            <Main>
-              <Component {...pageProps} />
-            </Main>
-          </AlertProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </>
+      <AuthProvider>
+        <AlertProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AlertProvider>
+      </AuthProvider>
+    </ChakraProvider>
   )
 }

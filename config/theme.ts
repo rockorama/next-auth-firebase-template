@@ -1,5 +1,6 @@
-import { createTheme } from '@material-ui/core/styles'
+import { extendTheme } from '@chakra-ui/react'
 
-const theme = createTheme({})
+// Example on how to customize: https://egghead.io/lessons/react-override-the-built-in-component-s-styles-in-chakra-ui
+const theme = extendTheme({})
 
 export default theme

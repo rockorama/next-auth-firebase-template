@@ -16,13 +16,10 @@ import {
 export type AuthContextType = {
   ready?: boolean
   user?: UserType | null
-  menuOpen?: boolean
-  setMenu: (open: boolean) => void
   refreshUser: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
-  setMenu: () => {},
   refreshUser: async () => {},
 })
 
@@ -53,7 +50,6 @@ export function useAuthentication(needsAuthenticated?: boolean) {
 
 export default function AuthProvider({ children }: { children: Children }) {
   const [ready, setReady] = useState(false)
-  const [menuOpen, setMenu] = useState(true)
   const [user, setUser] = useState<UserType>()
 
   useEffect(() => {
@@ -72,9 +68,7 @@ export default function AuthProvider({ children }: { children: Children }) {
   }, [user])
 
   return (
-    <AuthContext.Provider
-      value={{ user, ready, menuOpen, setMenu, refreshUser }}
-    >
+    <AuthContext.Provider value={{ user, ready, refreshUser }}>
       {children}
     </AuthContext.Provider>
   )

@@ -1,38 +1,48 @@
-import { AppBar, Box, makeStyles, Toolbar, Typography } from '@material-ui/core'
 import Link from 'next/link'
+import {
+  Box,
+  Heading,
+  Flex,
+  useBreakpointValue,
+  Divider,
+} from '@chakra-ui/react'
 
 import UserMenu from './UserMenu'
-import MenuButton from './MenuButton'
 
 import { SITE_DATA } from '../../config/seo'
 
+export function useHeaderHeight() {
+  return useBreakpointValue({ base: 12, md: 16 })
+}
+
 export default function Header() {
-  const classes = useStyles()
+  const height = useHeaderHeight()
 
   return (
     <>
-      <Toolbar />
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <MenuButton />
+      <Box h={height} />
+      <Box
+        as="header"
+        position="fixed"
+        w="100%"
+        margin={0}
+        h={height}
+        bg="white"
+      >
+        <Flex
+          px={4}
+          w="100%"
+          h={height}
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Link href="/">
-            <Typography className={classes.logo} variant="h5">
-              {SITE_DATA.title}
-            </Typography>
+            <Heading size="lg">{SITE_DATA.title}</Heading>
           </Link>
-          <Box flex={1}></Box>
           <UserMenu />
-        </Toolbar>
-      </AppBar>
+        </Flex>
+        <Divider />
+      </Box>
     </>
   )
 }
-
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  logo: {
-    cursor: 'pointer',
-  },
-}))
