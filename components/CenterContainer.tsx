@@ -1,22 +1,14 @@
-import { Box, Container } from '@material-ui/core'
+import { Container, VStack } from '@chakra-ui/layout'
 
 type Props = {
   children: Children
-  maxWidth?: false | 'sm' | 'xs' | 'md' | 'lg' | 'xl'
+  maxWidth?: 'sm' | 'xs' | 'md' | 'lg' | 'xl'
 }
 
 export default function CenterContainer(props: Props) {
   return (
-    <Container maxWidth={props.maxWidth}>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        py={5}
-      >
-        {props.children}
-      </Box>
+    <Container size={props.maxWidth}>
+      <VStack py={5}>{props.children}</VStack>
     </Container>
   )
 }

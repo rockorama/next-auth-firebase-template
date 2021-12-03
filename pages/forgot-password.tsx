@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import Form, { FormSubmitPayload } from 'formact'
 import { Box, Typography } from '@material-ui/core'
+import { Alert, AlertIcon } from '@chakra-ui/react'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/Form/FormSubmitButton'
 import TextField from '../components/Form/TextField'
-import FeedbackBox from '../components/Feedback'
 
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
@@ -25,10 +25,10 @@ export default function ForgotPassword() {
   if (success) {
     return (
       <CenterContainer maxWidth="sm">
-        <FeedbackBox
-          message="We sent you an email with a link to reset your password."
-          severity="success"
-        />
+        <Alert status="success">
+          <AlertIcon />
+          We sent you an email with a link to reset your password.
+        </Alert>
       </CenterContainer>
     )
   }

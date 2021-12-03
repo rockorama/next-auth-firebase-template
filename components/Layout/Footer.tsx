@@ -3,7 +3,7 @@ import { SITE_DATA } from '../../config/seo'
 
 export default function Footer() {
   return (
-    <Box w="100%">
+    <Box w="full">
       <Divider />
       <HStack
         p={4}
