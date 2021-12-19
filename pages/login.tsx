@@ -28,6 +28,7 @@ export default function Login() {
     if (payload.valid) {
       try {
         await login(payload.values)
+        return
       } catch (e) {
         alert(e)
       }
@@ -45,13 +46,7 @@ export default function Login() {
         <TextField required name="email" type="email" label="Email" />
         <TextField required name="password" type="password" label="Password" />
 
-        <FormSubmitButton
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          disabledInvalid
-        >
+        <FormSubmitButton fullWidth size="lg">
           Login
         </FormSubmitButton>
         <Box pt={4} display>

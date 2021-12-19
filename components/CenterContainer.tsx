@@ -1,4 +1,4 @@
-import { Container, VStack } from '@chakra-ui/layout'
+import { Container, VStack } from '@chakra-ui/react'
 
 type Props = {
   children: Children

@@ -1,7 +1,5 @@
-import { Snackbar } from '@material-ui/core'
-import Alert from '@material-ui/lab/Alert'
-import { useContext, useState } from 'react'
-import { createContext } from 'react'
+import { useContext, useState, createContext, useCallback } from 'react'
+import { useToast } from '@chakra-ui/react'
 
 const AlertContext = createContext<{
   alert: (item: FeedbackState) => void
@@ -15,26 +13,34 @@ export function useAlert() {
 }
 
 export default function AlertProvider(props: { children: Children }) {
-  const [alert, setAlert] = useState<FeedbackState | Error | null>()
+  const toast = useToast()
+
+  const alert = useCallback((item?: FeedbackState | Error | string | null) => {
+    if (!item) {
+      toast.closeAll()
+      return
+    }
+
+    if (typeof item === 'string') {
+      toast({ title: item, status: 'success', isClosable: true })
+      return
+    }
+
+    if (item instanceof Error) {
+      toast({
+        title: item.message?.replace('Firebase:', ''),
+        status: 'error',
+        isClosable: true,
+      })
+      return
+    }
+
+    toast({ title: item.message, isClosable: true, status: item.severity })
+  }, [])
 
   return (
-    <AlertContext.Provider value={{ alert: setAlert }}>
+    <AlertContext.Provider value={{ alert }}>
       {props.children}
-      {alert ? (
-        <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          open={!!alert}
-          autoHideDuration={6000}
-          onClose={() => setAlert(null)}
-        >
-          <Alert
-            onClose={() => setAlert(null)}
-            severity={alert instanceof Error ? 'error' : alert.severity}
-          >
-            {alert.message}
-          </Alert>
-        </Snackbar>
-      ) : null}
     </AlertContext.Provider>
   )
 }

@@ -1,10 +1,8 @@
 import React from 'react'
 import { useForm } from 'formact'
+import { Button } from '@chakra-ui/react'
 
-import CircularProgress from '@material-ui/core/CircularProgress'
-import { Box, Button, ButtonProps } from '@material-ui/core'
-
-type Props = ButtonProps & {
+type Props = React.ComponentProps<typeof Button> & {
   disabledInvalid?: boolean
 }
 
@@ -17,18 +15,16 @@ const FormSubmitButton = (props: Props) => {
     props.onClick && props.onClick(e)
   }
 
-  return submitting ? (
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <CircularProgress />
-    </Box>
-  ) : (
+  return (
     <Button
-      {...other}
-      disabled={props.disabled || (!valid && disabledInvalid)}
+      isLoading={submitting}
+      loadingText="Submitting"
+      disabled={disabledInvalid && !valid}
+      width="100%"
+      variant="solid"
+      {...props}
       onClick={onSubmit}
-    >
-      {props.children}
-    </Button>
+    />
   )
 }
 

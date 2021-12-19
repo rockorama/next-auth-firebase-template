@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/layout'
+import { VStack } from '@chakra-ui/react'
 
 import Header from './Header'
 import Main from './Main'
