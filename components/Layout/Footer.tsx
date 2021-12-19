@@ -1,4 +1,5 @@
 import { Box, HStack, Divider } from '@chakra-ui/react'
+
 import { SITE_DATA } from '../../config/seo'
 
 export default function Footer() {

@@ -1,68 +1,36 @@
-import React from 'react'
+import { FormControl, FormHelperText, FormLabel, Input } from '@chakra-ui/react'
 import { FieldProps, useField } from 'formact'
 
-import MuiTextField, {
-  TextFieldProps as MuiTextFieldProps,
-} from '@material-ui/core/TextField'
-import { Box } from '@material-ui/core'
-
-export type TextFieldProps = FieldProps &
-  MuiTextFieldProps & {
-    noFormSubmit?: boolean
-    disabled?: boolean
-    error?: boolean
-    multiline?: boolean
-    onSubmit?: (value?: string) => any
-  }
-
-const TextField = (props: TextFieldProps) => {
-  const {
-    fieldValue,
-    update,
-    showError,
-    errorMessage,
-    submitting,
-    onBlur,
-    submit,
-  } = useField<string>({
-    ...props,
-  })
-  const { noFormSubmit, validation, ...other } = props
-
-  const onKeyPress: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
-    props.onKeyPress && props.onKeyPress(e)
-
-    if (
-      !props.multiline &&
-      (e.nativeEvent.code === 'Enter' || e.nativeEvent.code === 'NumpadEnter')
-    ) {
-      e.preventDefault()
-      !noFormSubmit && submit()
-      props.onSubmit && props.onSubmit(fieldValue)
-    }
-  }
-
-  return (
-    <Box width="100%" pb={2}>
-      <MuiTextField
-        disabled={submitting || props.disabled}
-        variant="outlined"
-        fullWidth
-        {...other}
-        error={props.error || showError}
-        helperText={
-          showError ? errorMessage : props.helperText ? props.helperText : ''
-        }
-        value={fieldValue}
-        onChange={(e) => {
-          update(e.target.value)
-          props.onChange && props.onChange(e)
-        }}
-        onKeyPress={onKeyPress}
-        onBlur={onBlur}
-      />
-    </Box>
-  )
+type Props = FieldProps & {
+  label?: string
+  helperText?: string
 }
 
-export default TextField
+export default function TextField(props: Props) {
+  const field = useField<string>(props)
+  console.log(field.showError, field.errorMessage)
+  return (
+    <FormControl isRequired={props.required} pb={2}>
+      {props.label ? (
+        <FormLabel htmlFor={props.name}>{props.label}</FormLabel>
+      ) : null}
+      <Input
+        id={props.name}
+        type={props.type}
+        value={field.fieldValue || ''}
+        onChange={(e) => {
+          field.update(e.target.value)
+        }}
+        onBlur={(e) => {
+          props.onBlur?.(e)
+          field.onBlur()
+        }}
+      />
+      {field.showError || props.helperText ? (
+        <FormHelperText textColor={field.showError ? 'error' : undefined}>
+          {field.errorMessage || props.helperText}
+        </FormHelperText>
+      ) : null}
+    </FormControl>
+  )
+}

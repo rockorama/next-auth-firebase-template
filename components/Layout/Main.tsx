@@ -1,7 +1,8 @@
-import { VStack, space, useTheme } from '@chakra-ui/react'
+import { VStack } from '@chakra-ui/react'
 
 import Footer from './Footer'
 import { useHeaderHeight } from './Header'
+
 export default function Main(props: ChildrenProps) {
   const headerHeight = useHeaderHeight()
 
