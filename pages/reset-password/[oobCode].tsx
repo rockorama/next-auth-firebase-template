@@ -1,13 +1,14 @@
 import { useState } from 'react'
-import { Box, Button, Typography } from '@material-ui/core'
+import { Heading } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 import Form, { FormSubmitPayload } from 'formact'
 
 import TextField from '../../components/Form/TextField'
 import FormSubmitButton from '../../components/Form/FormSubmitButton'
-import FeedbackBox from '../../components/Feedback'
 import CenterContainer from '../../components/CenterContainer'
+import Feedback from '../../components/Feedback'
+import Link from '../../components/Link'
+
 import {
   PASSWORD_VALIDATION,
   resetPassword,
@@ -45,12 +46,10 @@ export default function ResetPassword() {
   if (done) {
     return (
       <CenterContainer>
-        <FeedbackBox {...done} />
-        <Box pt={4}>
-          <Link href="/login">
-            <Button>Login to access your account</Button>
-          </Link>
-        </Box>
+        <Feedback {...done} />
+        <Link pt={4} href="/login">
+          Login to access your account
+        </Link>
       </CenterContainer>
     )
   }
@@ -58,35 +57,24 @@ export default function ResetPassword() {
   return (
     <Form<ResetPasswordForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
-        <Box pb={4}>
-          <Typography variant="h4">Reset your password?</Typography>
-        </Box>
+        <Heading size="md" mb={4}>
+          Reset your password?
+        </Heading>
+
         <TextField
           type="password"
           required
           name="newPassword"
-          variant="outlined"
           label="New password"
-          fullWidth
         />
         <TextField
           validation={PASSWORD_VALIDATION}
           type="password"
           required
           name="repeatPassword"
-          variant="outlined"
           label="Repeat new password"
-          fullWidth
         />
-        <FormSubmitButton
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          disabledInvalid
-        >
-          Submit
-        </FormSubmitButton>
+        <FormSubmitButton>Submit</FormSubmitButton>
       </CenterContainer>
     </Form>
   )

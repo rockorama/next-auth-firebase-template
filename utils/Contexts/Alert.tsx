@@ -35,7 +35,12 @@ export default function AlertProvider(props: { children: Children }) {
       return
     }
 
-    toast({ title: item.message, isClosable: true, status: item.severity })
+    toast({
+      title: item.title || item.message,
+      description: item.title ? item.message : undefined,
+      isClosable: true,
+      status: item.severity,
+    })
   }, [])
 
   return (

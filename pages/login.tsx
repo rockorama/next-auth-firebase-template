@@ -1,10 +1,10 @@
-import Link from 'next/link'
+import { Heading, VStack } from '@chakra-ui/react'
 import Form, { FormSubmitPayload } from 'formact'
-import { Box, Button, Typography } from '@material-ui/core'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/Form/FormSubmitButton'
 import TextField from '../components/Form/TextField'
+import Link from '../components/Link'
 
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
@@ -39,29 +39,19 @@ export default function Login() {
   return (
     <Form<LoginForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
-        <Box pb={4}>
-          <Typography variant="h4">Access your account</Typography>
-        </Box>
+        <Heading size="md" mb={4}>
+          Access your account
+        </Heading>
 
         <TextField required name="email" type="email" label="Email" />
         <TextField required name="password" type="password" label="Password" />
+        <FormSubmitButton>Login</FormSubmitButton>
 
-        <FormSubmitButton fullWidth size="lg">
-          Login
-        </FormSubmitButton>
-        <Box pt={4} display>
-          <Link href="/signup">
-            <Button>Don't have an account?</Button>
-          </Link>
-        </Box>
-        <Box pt={2} display>
-          OR
-        </Box>
-        <Box pt={2} display>
-          <Link href="/forgot-password">
-            <Button>Forgot your Password?</Button>
-          </Link>
-        </Box>
+        <VStack pt={4}>
+          <Link href="/signup">Don't have an account?</Link>
+          <span>or</span>
+          <Link href="/forgot-password">Forgot your Password?</Link>
+        </VStack>
       </CenterContainer>
     </Form>
   )

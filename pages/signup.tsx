@@ -1,10 +1,10 @@
-import Link from 'next/link'
+import { Heading } from '@chakra-ui/react'
 import Form, { FormSubmitPayload } from 'formact'
-import { Box, Button, Typography } from '@material-ui/core'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/Form/FormSubmitButton'
 import TextField from '../components/Form/TextField'
+import Link from '../components/Link'
 
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
@@ -19,6 +19,7 @@ type SignUpForm = {
 export default function SignUp() {
   const { ready } = useAuthentication()
   const alert = useAlert()
+
   if (!ready) {
     return null
   }
@@ -28,6 +29,7 @@ export default function SignUp() {
       alert(null)
       try {
         await signUp(payload.values)
+        return
       } catch (e) {
         alert(e)
       }
@@ -38,28 +40,18 @@ export default function SignUp() {
   return (
     <Form<SignUpForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
-        <Box pb={4}>
-          <Typography variant="h4">Create your account</Typography>
-        </Box>
+        <Heading size="md" pb={4}>
+          Create your account
+        </Heading>
 
         <TextField required name="name" label="Name" />
         <TextField required name="email" type="email" label="Email" />
         <TextField required name="password" type="password" label="Password" />
+        <FormSubmitButton>Submit</FormSubmitButton>
 
-        <FormSubmitButton
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          disabledInvalid
-        >
-          Submit
-        </FormSubmitButton>
-        <Box pt={4}>
-          <Link href="/login">
-            <Button>Already have an account?</Button>
-          </Link>
-        </Box>
+        <Link href="/login" pt={4}>
+          Already have an account?
+        </Link>
       </CenterContainer>
     </Form>
   )

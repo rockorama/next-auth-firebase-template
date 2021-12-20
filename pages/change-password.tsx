@@ -1,5 +1,5 @@
 import Form, { FormSubmitPayload } from 'formact'
-import { Box, Typography } from '@material-ui/core'
+import { Box, Heading } from '@chakra-ui/react'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/Form/FormSubmitButton'
@@ -43,44 +43,30 @@ export default function ChangePassword() {
     <Form<ChangePasswordForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
         <Box pb={4}>
-          <Typography variant="h4">Change Password</Typography>
+          <Heading size="md">Change Password</Heading>
         </Box>
 
         <TextField
           type="password"
           required
           name="password"
-          variant="outlined"
           label="Current password"
-          fullWidth
         />
         <TextField
           type="password"
           required
           name="newPassword"
-          variant="outlined"
           label="New password"
-          fullWidth
         />
         <TextField
           validation={PASSWORD_VALIDATION}
           type="password"
           required
           name="repeatPassword"
-          variant="outlined"
           label="Repeat new password"
-          fullWidth
         />
 
-        <FormSubmitButton
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          disabledInvalid
-        >
-          Submit
-        </FormSubmitButton>
+        <FormSubmitButton>Submit</FormSubmitButton>
       </CenterContainer>
     </Form>
   )

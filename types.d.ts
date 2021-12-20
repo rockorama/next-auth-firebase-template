@@ -9,6 +9,7 @@ type ChildrenProps = {
 }
 
 type FeedbackState = {
+  title?: string
   message: string
   severity: 'success' | 'error' | 'warning' | 'info'
 } | null

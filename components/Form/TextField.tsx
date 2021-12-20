@@ -4,6 +4,8 @@ import { FieldProps, useField } from 'formact'
 type Props = FieldProps & {
   label?: string
   helperText?: string
+  disabled?: boolean
+  readOnly?: boolean
 }
 
 export default function TextField(props: Props) {
@@ -11,6 +13,8 @@ export default function TextField(props: Props) {
 
   return (
     <FormControl
+      isDisabled={props.disabled}
+      isReadOnly={props.readOnly}
       isInvalid={field.showError}
       color={field.showError ? 'error' : undefined}
       isRequired={props.required}

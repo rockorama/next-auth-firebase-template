@@ -4,6 +4,7 @@ import { getAuthenticatedUser } from './authentication'
 import { app } from './client'
 
 export const storage = getStorage(app)
+
 export const uploadFile = async (file: File, path: string): Promise<string> => {
   const fileRef = ref(storage, path)
   await uploadBytes(fileRef, file)
@@ -15,6 +16,6 @@ export const uploadUserFile = async (
   folder: string
 ): Promise<string> => {
   const user = getAuthenticatedUser()
-  const path = `${user.uid}/${folder}/${file.name}`
+  const path = `${user.uid}/${folder}/${Date.now()}-${file.name}`
   return uploadFile(file, path)
 }

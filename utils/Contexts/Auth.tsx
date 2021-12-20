@@ -27,8 +27,11 @@ export function useAuth() {
   return useContext(AuthContext)
 }
 
-export function useAuthentication(needsAuthenticated?: boolean) {
-  const { user, ready } = useAuth()
+export function useAuthentication(
+  needsAuthenticated?: boolean,
+  redirectURL?: string
+) {
+  const { user, ready, refreshUser } = useAuth()
 
   const authenticated = !!user
 
@@ -37,15 +40,17 @@ export function useAuthentication(needsAuthenticated?: boolean) {
   useEffect(() => {
     if (ready) {
       if (!authenticated && needsAuthenticated) {
-        router.replace('/login')
+        router.replace(redirectURL || '/login')
       }
       if (authenticated && !needsAuthenticated) {
-        router.replace('/')
+        router.replace(redirectURL || '/')
       }
     }
   }, [authenticated, ready, needsAuthenticated])
 
-  return { user, ready }
+  if (!user) return { ready }
+
+  return { user, ready, refreshUser }
 }
 
 export default function AuthProvider({ children }: { children: Children }) {

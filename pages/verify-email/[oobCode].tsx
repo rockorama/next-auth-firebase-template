@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { Box, Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 
-import { Box, Button, CircularProgress } from '@material-ui/core'
 import FeedbackBox from '../../components/Feedback'
+import Loader from '../../components/Loader'
 import CenterContainer from '../../components/CenterContainer'
+
 import {
   sendVerificationLink,
   verifyEmail,
@@ -11,12 +13,12 @@ import {
 import { useAuth } from '../../utils/Contexts/Auth'
 
 export default function VerifyEmail() {
-  const { query, push } = useRouter()
+  const { query } = useRouter()
   const { user, ready, refreshUser } = useAuth()
   const [result, setResult] = useState<FeedbackState>()
 
   useEffect(() => {
-    if (!user) {
+    if (!ready) {
       return
     }
     if (query.oobCode) {
@@ -29,38 +31,15 @@ export default function VerifyEmail() {
             message: 'Your email address is now verified.',
           })
         } catch (e) {
-          setResult({ severity: 'error', message: e.message })
+          setResult({ severity: 'error', message: 'Invalid verification code' })
         }
       }
       verify()
     }
-  }, [query, user])
-
-  useEffect(() => {
-    if (!user) {
-      return
-    }
-    if (result?.severity === 'success') {
-      const timeoutID = setTimeout(() => {
-        push('/')
-      }, 5000)
-
-      return () => {
-        timeoutID && clearTimeout(timeoutID)
-      }
-    }
-  }, [result, user])
-
-  if (!ready) {
-    return null
-  }
+  }, [query, ready])
 
   if (!result) {
-    return (
-      <CenterContainer>
-        <CircularProgress />
-      </CenterContainer>
-    )
+    return <Loader />
   }
 
   return (
@@ -78,7 +57,7 @@ export default function VerifyEmail() {
                     'The email address verification link was sent to your inbox!',
                 })
               } catch (e) {
-                setResult({ severity: 'error', message: e.message })
+                setResult({ severity: 'error', message: 'Error sending link' })
               }
             }}
           >

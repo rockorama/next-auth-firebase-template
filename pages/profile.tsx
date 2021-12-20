@@ -1,14 +1,12 @@
-import { useEffect } from 'react'
+import { Heading } from '@chakra-ui/react'
 import Form, { FormSubmitPayload } from 'formact'
-import { Box, Button, Typography } from '@material-ui/core'
-import { useFilePicker } from 'use-file-picker'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/Form/FormSubmitButton'
 import TextField from '../components/Form/TextField'
-import { useAuthentication } from '../utils/Contexts/Auth'
-import Avatar from '../components/Avatar'
+import ImageField from '../components/Form/ImageField'
 
+import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
 import { updateAvatar, updateName } from '../firebase/authentication'
 import { uploadUserFile } from '../firebase/storage'
@@ -16,29 +14,12 @@ import { uploadUserFile } from '../firebase/storage'
 type ProfileForm = {
   name: string
   email: string
-  photoUrl?: string
+  photoUrl?: File | string
 }
 
 export default function Profile() {
-  const { ready, user } = useAuthentication(true)
+  const { ready, user, refreshUser } = useAuthentication(true)
   const alert = useAlert()
-
-  const [openFileSelector, { plainFiles, errors, clear }] = useFilePicker({
-    accept: 'image/*',
-    multiple: false,
-    maxFileSize: 50,
-    imageSizeRestrictions: {
-      maxHeight: 1600,
-      maxWidth: 1600,
-      minHeight: 50,
-      minWidth: 50,
-    },
-  })
-
-  useEffect(() => {
-    errors.length &&
-      alert({ severity: 'error', message: 'Error to upload file' })
-  }, [errors])
 
   if (!ready || !user) {
     return null
@@ -48,12 +29,18 @@ export default function Profile() {
     if (payload.valid) {
       try {
         await updateName(payload.values.name)
-        if (plainFiles.length) {
-          const fileUrl = await uploadUserFile(plainFiles[0], 'profile')
-          await updateAvatar(fileUrl)
-          user.reload()
-          clear()
+
+        if (payload.values.photoUrl) {
+          let url = ''
+          if (typeof payload.values.photoUrl === 'string') {
+            url = payload.values.photoUrl
+          } else {
+            url = await uploadUserFile(payload.values.photoUrl, 'profile')
+          }
+          await updateAvatar(url)
+          refreshUser()
         }
+
         alert({ severity: 'success', message: 'Profile updated!' })
       } catch (e) {
         alert({ severity: 'error', message: e.message })
@@ -68,45 +55,25 @@ export default function Profile() {
       initialValues={{
         name: user.displayName,
         email: user.email,
+        photoUrl: user?.photoURL,
       }}
     >
       <CenterContainer maxWidth="sm">
-        <Box pb={2}>
-          <Typography variant="h4">Your Profile</Typography>
-        </Box>
-        <Box
-          py={3}
-          alignItems="center"
-          justifyContent="center"
-          display="flex"
-          flexDirection="column"
-          onClick={() => {
-            clear()
-            openFileSelector()
-          }}
-        >
-          <Avatar
-            src={
-              plainFiles.length ? URL.createObjectURL(plainFiles[0]) : undefined
-            }
-            size="large"
-          />
-          <Box py={1}>
-            <Button>Change Avatar</Button>
-          </Box>
-        </Box>
-        <TextField required name="name" label="Name" />
-        <TextField disabled required name="email" type="email" label="Email" />
+        <Heading size="md" pb={4}>
+          Your Profile
+        </Heading>
 
-        <FormSubmitButton
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          disabledInvalid
-        >
-          Submit
-        </FormSubmitButton>
+        <ImageField
+          name="photoUrl"
+          boxSize="300px"
+          objectFit="cover"
+          fallbackSrc="https://via.placeholder.com/300"
+          borderRadius="full"
+        />
+        <TextField required name="name" label="Name" />
+        <TextField readOnly required name="email" type="email" label="Email" />
+
+        <FormSubmitButton>Submit</FormSubmitButton>
       </CenterContainer>
     </Form>
   )

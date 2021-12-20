@@ -19,10 +19,10 @@ const FormSubmitButton = (props: Props) => {
     <Button
       isLoading={submitting}
       loadingText="Submitting"
-      disabled={disabledInvalid && !valid}
+      disabled={(disabledInvalid && !valid) || submitting}
       width="100%"
       variant="solid"
-      {...props}
+      {...other}
       onClick={onSubmit}
     />
   )

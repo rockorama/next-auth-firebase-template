@@ -27,7 +27,15 @@ export default function Header() {
   return (
     <>
       <Box h={height} />
-      <Box as="header" position="fixed" w="100%" margin={0} h={height}>
+      <Box
+        background={'background'}
+        as="header"
+        position="fixed"
+        w="100%"
+        margin={0}
+        h={height}
+        zIndex={100000}
+      >
         <Flex
           px={4}
           w="100%"

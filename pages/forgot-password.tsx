@@ -1,11 +1,11 @@
 import { useState } from 'react'
+import { Heading } from '@chakra-ui/react'
 import Form, { FormSubmitPayload } from 'formact'
-import { Box, Typography } from '@material-ui/core'
-import { Alert, AlertIcon } from '@chakra-ui/react'
 
 import CenterContainer from '../components/CenterContainer'
 import FormSubmitButton from '../components/Form/FormSubmitButton'
 import TextField from '../components/Form/TextField'
+import Feedback from '../components/Feedback'
 
 import { useAuthentication } from '../utils/Contexts/Auth'
 import { useAlert } from '../utils/Contexts/Alert'
@@ -25,10 +25,11 @@ export default function ForgotPassword() {
   if (success) {
     return (
       <CenterContainer maxWidth="sm">
-        <Alert status="success">
-          <AlertIcon />
-          We sent you an email with a link to reset your password.
-        </Alert>
+        <Feedback
+          severity="success"
+          title="Almost there!"
+          message="We sent you an email with a link to reset your password."
+        />
       </CenterContainer>
     )
   }
@@ -49,20 +50,11 @@ export default function ForgotPassword() {
   return (
     <Form<ForgotPasswordForm> onSubmit={onSubmit}>
       <CenterContainer maxWidth="sm">
-        <Box pb={4}>
-          <Typography variant="h4">Forgot your password?</Typography>
-        </Box>
+        <Heading size="md" mb={4}>
+          Forgot your password?
+        </Heading>
         <TextField required name="email" type="email" label="Email" />
-
-        <FormSubmitButton
-          variant="contained"
-          color="primary"
-          fullWidth
-          size="large"
-          disabledInvalid
-        >
-          Send reset email
-        </FormSubmitButton>
+        <FormSubmitButton>Send reset email</FormSubmitButton>
       </CenterContainer>
     </Form>
   )

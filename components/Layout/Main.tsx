@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/react'
+import { Box, VStack } from '@chakra-ui/react'
 
 import Footer from './Footer'
 import { useHeaderHeight } from './Header'
@@ -14,7 +14,9 @@ export default function Main(props: ChildrenProps) {
       alignItems="flex-start"
       justifyContent="space-between"
     >
-      {props.children}
+      <Box flex={1} position="relative" width="full">
+        {props.children}
+      </Box>
       <Footer />
     </VStack>
   )
